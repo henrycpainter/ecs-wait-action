@@ -5,18 +5,17 @@
   "author": "oryan@moshe.ai",
   "license": "ISC",
   "scripts": {
-    "build": "ncc build src/index.ts -o dist",
+    "build": "esbuild --bundle --minify --platform=node src/index.ts --outfile=dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
     "@aws-sdk/client-ecs": "^3.797.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",
-    "@vercel/ncc": "^0.38.3",
+    "esbuild": "^0.25.3",
     "typescript": "^5.8.3"
   }
 }
