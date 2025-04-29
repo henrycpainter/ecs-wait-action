@@ -35,12 +35,13 @@ const customWait = async (params:Params) => {
   return {isStable, currTry, timeTakenSecs};
 };
 
-const createEcsConnection = ({ accessKeyId, secretAccessKey, region }: {accessKeyId: string, secretAccessKey: string, region: string}) => {
+const createEcsConnection = ({ accessKeyId, secretAccessKey, region, sessionToken }: {accessKeyId: string, secretAccessKey: string, region: string, sessionToken?: string}) => {
   let config: ECSClientConfig = {
     region,
     credentials: {
       accessKeyId,
-      secretAccessKey
+      secretAccessKey,
+      sessionToken
     }
   } ;
   return new ECSClient(config);
@@ -74,6 +75,7 @@ const checkServices = async (servicesString: string, ecsConnection: ECSClient, c
 const extractParams = async () => {
   const accessKeyId = getInput('aws-access-key-id') || process.env.AWS_ACCESS_KEY_ID;
   const secretAccessKey = getInput('aws-secret-access-key') || process.env.AWS_SECRET_ACCESS_KEY;
+  const sessionToken = process.env.AWS_SESSION_TOKEN;
   const region = getInput('aws-region') || process.env.AWS_REGION;
   if (!accessKeyId || !secretAccessKey || !region) {
     setFailed(
@@ -84,7 +86,7 @@ const extractParams = async () => {
   const maxTimeoutMins = parseInt(getInput('max-timeout-mins'));
   const cluster = getInput('ecs-cluster', { required: true });
   const verbose = getInput('verbose') === 'true';
-  const ecsConnection = createEcsConnection({ accessKeyId, secretAccessKey, region });
+  const ecsConnection = createEcsConnection({ accessKeyId, secretAccessKey, region, sessionToken });
   const services = await checkServices(getInput('ecs-services'), ecsConnection, cluster);
 
   const params: Params = {
