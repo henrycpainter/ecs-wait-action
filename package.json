@@ -5,7 +5,7 @@
   "author": "oryan@moshe.ai",
   "license": "ISC",
   "scripts": {
-    "build": "esbuild --bundle --minify --platform=node src/index.ts --outfile=dist/index.js",
+    "build": "esbuild --bundle --minify --platform=node src/index.ts --outfile=dist/index.js"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
